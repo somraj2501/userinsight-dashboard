@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles */
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colors */
+    --color-primary: #1c4980;
+    --color-dark: #383838;
+    --control-height: 48px
+}
+
+button,input {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    height: var(--control-height);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
