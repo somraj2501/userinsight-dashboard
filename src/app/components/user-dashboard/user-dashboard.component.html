@@ -15,55 +15,72 @@
       <section class="card table-card">
         <div class="card-header">
           <h2>User List</h2>
-          <button class="btn-add-user" (click)="toggleUserForm()">
-            <span>+</span>&nbsp;Add User
-          </button>
+          <div class="header-actions">
+            <div class="search-box">
+              <input
+                type="text"
+                placeholder="Search by name, email or role"
+                (input)="onSearch($event)"
+                [value]="searchQuery$ | async"
+              />
+            </div>
+            <button class="btn-add-user" (click)="toggleUserForm()">
+              <span>+</span>&nbsp;Add User
+            </button>
+          </div>
         </div>
         @if ((users$ | async)?.length) {
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let user of paginatedUsers$ | async">
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.email }}</td>
-                  <td>
-                    <span class="role-badge" [class]="user.role.toLowerCase()">
-                      {{ user.role }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- pagination -->
-          <div class="pagination">
-            <div class="pagination-info">
-              Page {{ currentPage$ | async }} of {{ totalPages$ | async }}
+          @if ((paginatedUsers$ | async)?.length) {
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of paginatedUsers$ | async">
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                      <span class="role-badge" [class]="user.role.toLowerCase()">
+                        {{ user.role }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="pagination-controls">
-              <button
-                class="btn-page"
-                [disabled]="(currentPage$ | async) === 1"
-                (click)="prevPage()"
-              >
-                Previous
-              </button>
-              <button
-                class="btn-page"
-                [disabled]="(currentPage$ | async) === (totalPages$ | async)"
-                (click)="nextPage()"
-              >
-                Next
-              </button>
+            <!-- pagination -->
+            <div class="pagination">
+              <div class="pagination-info">
+                Page {{ currentPage$ | async }} of {{ totalPages$ | async }}
+              </div>
+              <div class="pagination-controls">
+                <button
+                  class="btn-page"
+                  [disabled]="(currentPage$ | async) === 1"
+                  (click)="prevPage()"
+                >
+                  Previous
+                </button>
+                <button
+                  class="btn-page"
+                  [disabled]="(currentPage$ | async) === (totalPages$ | async)"
+                  (click)="nextPage()"
+                >
+                  Next
+                </button>
+              </div>
             </div>
-          </div>
+          } @else {
+            <div class="no-results">
+              <p>No users match your search "{{ searchQuery$ | async }}"</p>
+              <button class="btn-clear" (click)="searchQuery$.next('')">Clear search</button>
+            </div>
+          }
         } @else {
           <ng-container *ngTemplateOutlet="noData"></ng-container>
         }

@@ -17,6 +17,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   currentPage$ = new BehaviorSubject<number>(1);
   pageSize$ = new BehaviorSubject<number>(5);
   totalPages$ = new BehaviorSubject<number>(1);
+  searchQuery$ = new BehaviorSubject<string>('');
 
   showUserForm = false;
   private chartInstance: any;
@@ -25,11 +26,30 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService) {
     this.users$ = this.userService.users$;
 
-    // calculate total pages whenever users list changes
-    this.users$.pipe(takeUntil(this.destroy$)).subscribe(users => {
+    // filter users based on search query
+    const filteredUsers$ = combineLatest([this.users$, this.searchQuery$]).pipe(
+      map(([users, query]) => {
+        const lowerQuery = query.toLowerCase().trim();
+        if (!lowerQuery) return users;
+        return users.filter(
+          (u) =>
+            u.name.toLowerCase().includes(lowerQuery) ||
+            u.email.toLowerCase().includes(lowerQuery) ||
+            u.role.toLowerCase().includes(lowerQuery),
+        );
+      }),
+    );
+
+    // reset to page 1 when search query changes
+    this.searchQuery$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.currentPage$.next(1);
+    });
+
+    // calculate total pages whenever filtered list changes
+    filteredUsers$.pipe(takeUntil(this.destroy$)).subscribe((users) => {
       const totalPages = Math.ceil(users.length / this.pageSize$.value);
       this.totalPages$.next(totalPages || 1);
-      
+
       // reset current page if it exceeds total pages
       if (this.currentPage$.value > totalPages && totalPages > 0) {
         this.currentPage$.next(totalPages);
@@ -38,7 +58,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
     // logic for paginated users
     this.paginatedUsers$ = combineLatest<[User[], number, number]>([
-      this.users$,
+      filteredUsers$,
       this.currentPage$,
       this.pageSize$,
     ]).pipe(
@@ -47,6 +67,11 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         return users.slice(startIndex, startIndex + pageSize);
       }),
     );
+  }
+
+  onSearch(event: Event) {
+    const query = (event.target as HTMLInputElement).value;
+    this.searchQuery$.next(query);
   }
 
   ngOnInit(): void {
