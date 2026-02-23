@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService, User } from '../../services/user.service';
+import { UserService, User, Toast } from '../../services/user.service';
 import { Observable, Subject, takeUntil, combineLatest, map, BehaviorSubject } from 'rxjs';
 import { UserFormComponent } from '../user-form/user-form.component';
 
@@ -13,6 +13,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
 })
 export class UserDashboardComponent implements OnInit, OnDestroy {
   users$: Observable<User[]>;
+  toasts$: Observable<Toast[]>;
   paginatedUsers$: Observable<User[]>;
   currentPage$ = new BehaviorSubject<number>(1);
   pageSize$ = new BehaviorSubject<number>(5);
@@ -25,6 +26,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService) {
     this.users$ = this.userService.users$;
+    this.toasts$ = this.userService.toasts$;
 
     // filter users based on search query
     const filteredUsers$ = combineLatest([this.users$, this.searchQuery$]).pipe(
@@ -69,11 +71,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  onSearch(event: Event) {
-    const query = (event.target as HTMLInputElement).value;
-    this.searchQuery$.next(query);
-  }
-
   ngOnInit(): void {
     // initialize chart only when users list has values
     this.users$.pipe(takeUntil(this.destroy$)).subscribe((users: User[]) => {
@@ -81,6 +78,11 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         this.initializeChart(users);
       }
     });
+  }
+
+  onSearch(event: Event) {
+    const query = (event.target as HTMLInputElement).value;
+    this.searchQuery$.next(query);
   }
 
   async initializeChart(users: User[]) {

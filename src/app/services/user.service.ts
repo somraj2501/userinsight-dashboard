@@ -7,6 +7,11 @@ export interface User {
   role: 'Admin' | 'Editor' | 'Viewer';
 }
 
+export interface Toast {
+  id: number;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -27,17 +32,32 @@ export class UserService {
   ]);
 
   users$ = this.usersSubject.asObservable();
+  private toastSubject = new BehaviorSubject<Toast[]>([]);
+  toasts$ = this.toastSubject.asObservable();
 
   constructor() {}
-
-  // get list of users
-  getUsers(): User[] {
-    return this.usersSubject.value;
-  }
 
   // add user to users list
   addUser(user: User) {
     const existingUsers = this.usersSubject.value;
     this.usersSubject.next([...existingUsers, user]);
+    this.addToast('User added successfully');
+  }
+
+  // add toast
+  addToast(message: string) {
+    const id = Date.now();
+    const currentToasts = this.toastSubject.value;
+    this.toastSubject.next([...currentToasts, { id, message }]);
+
+    // auto-remove toast after 5 seconds
+    setTimeout(() => {
+      this.removeToast(id);
+    }, 5000);
+  }
+
+  removeToast(id: number) {
+    const currentToasts = this.toastSubject.value;
+    this.toastSubject.next(currentToasts.filter((t) => t.id !== id));
   }
 }
