@@ -11,45 +11,78 @@
   </header>
   <main>
     <div class="content-grid">
-      <!-- Table Section -->
+      <!-- users table -->
       <section class="card table-card">
         <div class="card-header">
           <h2>User List</h2>
-          <button class="btn-add-user"><span>+</span>&nbsp;Add User</button>
+          <button class="btn-add-user" (click)="toggleUserForm()">
+            <span>+</span>&nbsp;Add User
+          </button>
         </div>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let user of users$ | async">
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>
-                  <span class="role-badge" [class]="user.role.toLowerCase()">
-                    {{ user.role }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        @if ((users$ | async)?.length) {
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users$ | async">
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>
+                    <span class="role-badge" [class]="user.role.toLowerCase()">
+                      {{ user.role }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <ng-container *ngTemplateOutlet="noData"></ng-container>
+        }
       </section>
 
-      <!-- Chart Section -->
+      <!-- roles chart -->
       <section class="card chart-card">
         <div class="card-header">
           <h2>Role Analytics</h2>
         </div>
-        <div class="chart-container">
-          <canvas id="roleChart"></canvas>
-        </div>
+        @if ((users$ | async)?.length) {
+          <div class="chart-container">
+            <canvas id="roleChart"></canvas>
+          </div>
+        } @else {
+          <ng-container *ngTemplateOutlet="noData"></ng-container>
+        }
       </section>
     </div>
   </main>
 </div>
+
+<!-- modal overlay -->
+<div
+  class="modal-overlay"
+  *ngIf="showUserForm"
+  (click)="$event.target === overlay && toggleUserForm()"
+  #overlay
+>
+  <div class="modal-content">
+    @defer (when showUserForm) {
+      <app-user-form (close)="toggleUserForm()"></app-user-form>
+    } @loading {
+      <div class="loading">Loading form...</div>
+    }
+  </div>
+</div>
+
+<!-- no data template -->
+<ng-template #noData>
+  <div class="no-data">
+    <p>No users found.</p>
+  </div>
+</ng-template>

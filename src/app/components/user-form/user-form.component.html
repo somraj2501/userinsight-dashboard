@@ -1,1 +1,32 @@
-<p>user-form.component works!</p>
+<div class="card">
+  <div class="card-header">
+    <h2>Add New User</h2>
+    <button class="btn-close" (click)="onCancel()">&times;</button>
+  </div>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="user-form">
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" formControlName="name" placeholder="John Doe" />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" formControlName="email" placeholder="johndoe@email.com" />
+    </div>
+
+    <div class="form-group">
+      <label for="role">User Role</label>
+      <select id="role" formControlName="role">
+        <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn-submit" (click)="onSubmit()" [disabled]="userForm.invalid">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

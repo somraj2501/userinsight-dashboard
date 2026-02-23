@@ -9,14 +9,14 @@
 }
 
 :root {
-    /* Colors & Dimensions */
+    /* colors */
     --color-primary: #1c4980;
     --color-dark: #383838;
-    --control-height: 48px
 }
 
+/* button and input styling */
 button, input {
-    height: var(--control-height);
+    height: 48px;
     border-radius: 8px;
     padding: 0 16px;
     font-size: 14px;
@@ -32,6 +32,7 @@ button {
     color: white;
     cursor: pointer;
     font-weight: 600;
+    padding: 0 36px;
 }
 
 button:hover {
@@ -47,4 +48,28 @@ input {
 input:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(28, 73, 128, 0.1);
+}
+
+/* card styling */
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e1e9f1;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-header h2 {
+  font-size: 18px;
+  font-weight: 700;
 }

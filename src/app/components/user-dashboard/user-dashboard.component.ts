@@ -2,16 +2,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService, User } from '../../services/user.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, UserFormComponent],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.css',
 })
 export class UserDashboardComponent implements OnInit, OnDestroy {
   users$: Observable<User[]>;
+  showUserForm = false;
   private chartInstance: any;
   private destroy$ = new Subject<void>();
 
@@ -21,7 +23,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // initialize chart only when users list has values
-    this.users$.pipe(takeUntil(this.destroy$)).subscribe((users) => {
+    this.users$.pipe(takeUntil(this.destroy$)).subscribe((users: User[]) => {
       if (users?.length) {
         this.initializeChart(users);
       }
@@ -60,13 +62,13 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
           {
             data: Object.values(roleCounts),
             backgroundColor: ['#1c4980', '#383838', '#e3eafc'],
-            borderWidth: 8,
+            borderWidth: 0,
+            hoverOffset: 8,
           },
         ],
       },
       options: {
         responsive: true,
-        maintainAspectRatio: true,
         plugins: {
           legend: { position: 'top', fullSize: true },
           title: {
@@ -76,6 +78,10 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         },
       },
     });
+  }
+
+  toggleUserForm() {
+    this.showUserForm = !this.showUserForm;
   }
 
   ngOnDestroy(): void {
