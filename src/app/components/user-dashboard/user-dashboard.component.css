@@ -1,0 +1,137 @@
+.container {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f4f7fa;
+  color: var(--color-dark);
+  padding: 32px;
+}
+
+header {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 14px;
+}
+
+main {
+  max-width: 1200px;
+  margin: 32px auto;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Styling */
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e1e9f1;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Table Styling */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  background-color: #f8fafc;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 16px 24px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+table td {
+  padding: 18px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+}
+
+table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Role Badges */
+.role-badge {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.role-badge.admin {
+  color: #e1eff8;
+  background-color: #1c4980;
+}
+.role-badge.editor {
+  color: #d4d4d4;
+  background-color: #383838;
+}
+.role-badge.viewer {
+  color: #1c4980;
+  background-color: #e3eafc;
+}
+
+/* Chart Settings */
+.chart-container {
+  padding: 24px;
+  height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-add-user {
+  padding: 0 24px;
+  font-size: 14px;
+
+  span {
+    font-size: 18px;
+  }
+}

@@ -1,23 +1,50 @@
 /* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 :root {
-    /* Colors */
+    /* Colors & Dimensions */
     --color-primary: #1c4980;
     --color-dark: #383838;
     --control-height: 48px
 }
 
-button,input {
+button, input {
+    height: var(--control-height);
+    border-radius: 8px;
+    padding: 0 16px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    border: none;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+button {
     background-color: var(--color-primary);
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    height: var(--control-height);
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
+    font-weight: 600;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+input {
+    background-color: #ffffff;
+    color: var(--color-dark);
+    border: 1px solid #e0e0e0;
+}
+
+input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(28, 73, 128, 0.1);
 }
