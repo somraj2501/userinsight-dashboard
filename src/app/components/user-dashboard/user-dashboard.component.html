@@ -30,7 +30,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let user of users$ | async">
+                <tr *ngFor="let user of paginatedUsers$ | async">
                   <td>{{ user.name }}</td>
                   <td>{{ user.email }}</td>
                   <td>
@@ -41,6 +41,28 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <!-- pagination -->
+          <div class="pagination">
+            <div class="pagination-info">
+              Page {{ currentPage$ | async }} of {{ totalPages$ | async }}
+            </div>
+            <div class="pagination-controls">
+              <button
+                class="btn-page"
+                [disabled]="(currentPage$ | async) === 1"
+                (click)="prevPage()"
+              >
+                Previous
+              </button>
+              <button
+                class="btn-page"
+                [disabled]="(currentPage$ | async) === (totalPages$ | async)"
+                (click)="nextPage()"
+              >
+                Next
+              </button>
+            </div>
           </div>
         } @else {
           <ng-container *ngTemplateOutlet="noData"></ng-container>

@@ -41,7 +41,7 @@ main {
   }
 }
 
-/* Card Styling */
+/* card styling */
 .card {
   background: #ffffff;
   border-radius: 16px;
@@ -65,7 +65,7 @@ main {
   font-weight: 700;
 }
 
-/* Table Styling */
+/* table styling */
 .table-wrapper {
   overflow-x: auto;
 }
@@ -96,7 +96,7 @@ table tr:hover {
   background-color: #f8fafc;
 }
 
-/* Role Badges */
+/* role badges */
 .role-badge {
   padding: 4px 12px;
   border-radius: 9999px;
@@ -118,7 +118,7 @@ table tr:hover {
   background-color: #e3eafc;
 }
 
-/* Chart Settings */
+/* chart settings */
 .chart-container {
   padding: 24px;
   height: 350px;
@@ -181,4 +181,57 @@ table tr:hover {
 .no-data {
   padding: 30px;
   text-align: center;
+}
+
+/* pagination styling */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #f1f5f9;
+  background-color: #f8fafc;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-page {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-page:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.btn-page:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-page:disabled {
+  color: #94a3b8;
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
