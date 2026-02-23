@@ -41,15 +41,17 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let user of paginatedUsers$ | async">
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>
-                      <span class="role-badge" [class]="user.role.toLowerCase()">
-                        {{ user.role }}
-                      </span>
-                    </td>
-                  </tr>
+                  @for (user of paginatedUsers$ | async; track user.email) {
+                    <tr>
+                      <td>{{ user.name }}</td>
+                      <td>{{ user.email }}</td>
+                      <td>
+                        <span class="role-badge" [class]="user.role.toLowerCase()">
+                          {{ user.role }}
+                        </span>
+                      </td>
+                    </tr>
+                  }
                 </tbody>
               </table>
             </div>
@@ -63,6 +65,7 @@
                   class="btn-page"
                   [disabled]="(currentPage$ | async) === 1"
                   (click)="prevPage()"
+                  aria-label="Previous page"
                 >
                   Previous
                 </button>
@@ -70,6 +73,7 @@
                   class="btn-page"
                   [disabled]="(currentPage$ | async) === (totalPages$ | async)"
                   (click)="nextPage()"
+                  aria-label="Next page"
                 >
                   Next
                 </button>
@@ -104,35 +108,32 @@
 </div>
 
 <!-- modal overlay -->
-<div
-  class="modal-overlay"
-  *ngIf="showUserForm"
-  (click)="$event.target === overlay && toggleUserForm()"
-  #overlay
->
-  <div class="modal-content">
-    @defer (when showUserForm) {
-      <app-user-form (close)="toggleUserForm()"></app-user-form>
-    } @loading {
-      <div class="loading">Loading form...</div>
-    }
+@if (showUserForm) {
+  <div class="modal-overlay" (click)="$event.target === overlay && toggleUserForm()" #overlay>
+    <div class="modal-content">
+      @defer (when showUserForm) {
+        <app-user-form (close)="toggleUserForm()"></app-user-form>
+      } @loading {
+        <div class="loading">Loading form...</div>
+      }
+    </div>
   </div>
-</div>
+}
 
 <!-- no data template -->
 <ng-template #noData>
-  <div class="no-data">
+  <div class="no-results">
     <p>No users found.</p>
   </div>
 </ng-template>
 
 <!-- toasts -->
- @if ((toasts$ | async)?.length) {
-   <div class="toast-container">
-     @for (toast of toasts$ | async; track toast.id) {
-       <div class="toast">
-         {{ toast.message }}
-       </div>
-     }
-   </div>
- }
+@if ((toasts$ | async)?.length) {
+  <div class="toast-container">
+    @for (toast of toasts$ | async; track toast.id) {
+      <div class="toast">
+        {{ toast.message }}
+      </div>
+    }
+  </div>
+}

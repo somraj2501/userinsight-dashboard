@@ -177,7 +177,9 @@ table tr:hover {
   background: white;
   padding: 0;
   border-radius: 16px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   width: 100%;
   max-width: 500px;
   animation: modalAppear 0.3s ease-out;
@@ -198,11 +200,6 @@ table tr:hover {
   padding: 40px;
   text-align: center;
   color: var(--color-primary);
-}
-
-.no-data {
-  padding: 30px;
-  text-align: center;
 }
 
 .no-results {
@@ -307,8 +304,10 @@ table tr:hover {
   font-weight: 600;
   color: var(--color-primary);
   background-color: #ffffffd1;
-  border: 1px solid var(--color-primary);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #cbdaee;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   backdrop-filter: blur(8px);
   animation: toastAppear 5s ease-out forwards;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
